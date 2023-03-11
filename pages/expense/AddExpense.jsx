@@ -121,45 +121,54 @@ const AddExpense = ({ navigation }) => {
       >
         <ScrollView h="full" w="full" keyboardShouldPersistTaps="handled">
           <Box mx={4} py={4}>
-            <Box mb={4}>
-              <Text color={labelColor} mb={2} fontSize="sm">
-                Title
-              </Text>
-              <Controller
-                control={control}
-                name="title"
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <Select
-                    accessibilityLabel="Choose title"
-                    placeholder="Choose title"
-                    selectedValue={value}
-                    onBlur={onBlur}
-                    bg={inputBg}
-                    borderColor="red.400"
-                    borderWidth={errors?.title ? 1 : 0}
-                    size="lg"
-                    color={inputTextColor}
-                    placeholderTextColor="gray.500"
-                    onValueChange={(value) => onChange(value)}
-                    mt="1"
-                    _selectedItem={{
-                      bg: "indigo.400",
-                      borderRadius: "md",
-                    }}
-                  >
-                    {options.map((o, id) => (
-                      <Select.Item label={o.label} value={o.value} key={id} />
-                    ))}
-                  </Select>
-                )}
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Title is required!",
-                  },
-                }}
-              />
-            </Box>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                flexGrow: 1,
+                width: "100%",
+              }}
+            >
+              <Box mb={4} w="100%">
+                <Text color={labelColor} mb={2} fontSize="sm">
+                  Title
+                </Text>
+                <Controller
+                  control={control}
+                  name="title"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <Select
+                      accessibilityLabel="Choose title"
+                      placeholder="Choose title"
+                      selectedValue={value}
+                      onBlur={onBlur}
+                      bg={inputBg}
+                      borderColor="red.400"
+                      borderWidth={errors?.title ? 1 : 0}
+                      size="lg"
+                      color={inputTextColor}
+                      placeholderTextColor="gray.500"
+                      onValueChange={(value) => onChange(value)}
+                      mt="1"
+                      _selectedItem={{
+                        bg: "indigo.400",
+                        borderRadius: "md",
+                      }}
+                    >
+                      {options.map((o, id) => (
+                        <Select.Item label={o.label} value={o.value} key={id} />
+                      ))}
+                    </Select>
+                  )}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Title is required!",
+                    },
+                  }}
+                />
+              </Box>
+            </ScrollView>
             <Box mb={4}>
               <Text color={labelColor} mb={2} fontSize="sm">
                 Amount

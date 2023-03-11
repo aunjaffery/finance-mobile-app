@@ -6,7 +6,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Expense from "../pages/expense/Expense";
 import AddExpense from "../pages/expense/AddExpense";
 import Settings from "../pages/settings/Settings";
-import Stacks from "../pages/etc/Stacks";
+import Stats from "../pages/stats/Stats";
 import { globalTheme, navThemeDark, navThemeLight } from "./theme";
 import { useSelector } from "react-redux";
 import { Box, useColorModeValue } from "native-base";
@@ -24,7 +24,7 @@ const AppNavigation = () => {
     if (Platform.OS === "android") {
       NavigationBar.setBackgroundColorAsync(
         darkMode ? globalTheme.dark.primary : globalTheme.light.primary
-      ).then((x) => console.log("nb",x)).catch(er => console.log(er));
+      );
     }
     console.log("DARK MODE >>>", darkMode);
   }, [darkMode]);
@@ -59,8 +59,8 @@ const AppNavigation = () => {
             }}
           />
           <Tab.Screen
-            name="Stacks"
-            component={Stacks}
+            name="Stats"
+            component={Stats}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons
