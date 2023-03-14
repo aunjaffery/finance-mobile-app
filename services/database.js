@@ -21,8 +21,8 @@ export const fetchExpenses = (data) => {
     if (!start || !end) reject("Error! Required start and end date");
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM expenses ORDER BY date DESC",
-        [],
+        "SELECT * FROM expenses where date BETWEEN ? AND ? ORDER BY date DESC",
+        [start, end],
         (_, result) => resolve(result.rows._array),
         (_, error) => reject(error)
       );

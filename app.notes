@@ -1,1 +1,6 @@
+-- replacing redux with zustand
+-- fetch api done.
+-- do rest of api and get rid of redux completly
+-- also delete chart-kit lib, not using it
 -- weird IOS error in AddExpense page, in select
+

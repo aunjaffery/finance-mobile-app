@@ -1,15 +1,14 @@
 import { Box, Flex, Switch, Text, useColorMode } from "native-base";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { changeTheme } from "../../store/system.silce";
+import { useStore } from "../../store/Store";
 
 const Settings = () => {
-  const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { changeTheme } = useStore((state) => state);
 
-  console.log(`Switching theme to ${colorMode} Mode!!!`);
   useEffect(() => {
-    dispatch(changeTheme(colorMode));
+    console.log(`Switching theme to ${colorMode} Mode!!!`);
+    changeTheme(colorMode);
   }, [colorMode]);
 
   return (

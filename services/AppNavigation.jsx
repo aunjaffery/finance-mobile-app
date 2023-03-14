@@ -7,16 +7,16 @@ import Expense from "../pages/expense/Expense";
 import AddExpense from "../pages/expense/AddExpense";
 import Settings from "../pages/settings/Settings";
 import { globalTheme, navThemeDark, navThemeLight } from "./theme";
-import { useSelector } from "react-redux";
 import { Box, useColorModeValue } from "native-base";
 import { Platform, StatusBar } from "react-native";
 import * as NavigationBar from "expo-navigation-bar";
 import { useEffect } from "react";
 import AreaChartComp from "../pages/stats/Real";
+import { useStore } from "../store/Store";
 
 const Tab = createBottomTabNavigator();
 const AppNavigation = () => {
-  const { darkMode } = useSelector((state) => state.system);
+  const { darkMode } = useStore((state) => state);
   const tintActiveColor = useColorModeValue("#27272a", "white");
   const tintInactiveColor = useColorModeValue("#a1a1aa", "#71717a");
 

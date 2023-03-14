@@ -1,14 +1,13 @@
 import { Box, Flex, Icon, Text, useColorModeValue } from "native-base";
-import { useSelector } from "react-redux";
 import ExpenseCard from "../../components/cards/ExpenseCard";
 import ExpCardSkl from "../../components/skeleton/ExpCardSkl";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Image } from "expo-image";
+import { useStore } from "../../store/Store";
 
 const ExpenseList = ({ topColor }) => {
-  const { loading, expList, monthlyTotal } = useSelector(
-    (state) => state.expense
-  );
+  const { loading, expList, monthlyTotal } = useStore((state) => state);
+	//console.log("ZUS exp ->" ,expList)
   if (loading) {
     return <ExpCardSkl />;
   }
