@@ -6,13 +6,13 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Expense from "../pages/expense/Expense";
 import AddExpense from "../pages/expense/AddExpense";
 import Settings from "../pages/settings/Settings";
-import Stats from "../pages/stats/Stats";
 import { globalTheme, navThemeDark, navThemeLight } from "./theme";
 import { useSelector } from "react-redux";
 import { Box, useColorModeValue } from "native-base";
 import { Platform, StatusBar } from "react-native";
 import * as NavigationBar from "expo-navigation-bar";
 import { useEffect } from "react";
+import AreaChartComp from "../pages/stats/Real";
 
 const Tab = createBottomTabNavigator();
 const AppNavigation = () => {
@@ -60,7 +60,7 @@ const AppNavigation = () => {
           />
           <Tab.Screen
             name="Stats"
-            component={Stats}
+            component={AreaChartComp}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons

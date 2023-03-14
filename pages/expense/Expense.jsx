@@ -18,30 +18,29 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { Platform } from "react-native";
 import { globalTheme } from "../../services/theme";
 import { FocusBar } from "../../services/FocusBar";
+import { dtFmt, mFmt } from "../../services/helper";
 
 const Expense = () => {
   //var log = logger.createLogger();
   const dispatch = useDispatch();
-  const mFormat = "MMM-YYYY";
-  const [selectedMon, setSelectedMon] = useState(moment().format(mFormat));
+  const [selectedMon, setSelectedMon] = useState(moment().format(mFmt));
   const [monList, setMonList] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclose();
 
   useEffect(() => {
     let monthArr = [];
     for (let i = 0; i <= 3; i++) {
-      monthArr.push(moment().subtract(i, "month").format(mFormat));
+      monthArr.push(moment().subtract(i, "month").format(mFmt));
     }
     setMonList(monthArr);
   }, []);
 
   useEffect(() => {
     console.log("useEffect Fetching expense -->");
-    let f = "HH:mm DD-MMM-YYYY";
-    let start = moment(`00:00 01-${selectedMon}`, f).toISOString(true);
-    let end = moment(`00:00 01-${selectedMon}`, f)
+    let start = moment(`${selectedMon}-01 00:00:00`, dtFmt).format(dtFmt);
+    let end = moment(`${selectedMon}-01 00:00:00`, dtFmt)
       .add(1, "month")
-      .toISOString(true);
+      .format(dtFmt);
     dispatch(fetchExpAsync({ start, end }));
   }, [selectedMon]);
 
@@ -66,7 +65,7 @@ const Expense = () => {
               borderRadius="full"
             >
               <Text color="white">
-                {moment(selectedMon, mFormat).format("MMMM")}
+                {moment(selectedMon, mFmt).format("MMMM")}
               </Text>
               <Icon
                 name="shopping-cart"
@@ -89,7 +88,7 @@ const Expense = () => {
                       onClose();
                     }}
                   >
-                    {moment(m, mFormat).format("MMMM")}
+                    {moment(m, mFmt).format("MMMM")}
                   </Actionsheet.Item>
                 ))}
             </Actionsheet.Content>

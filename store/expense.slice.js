@@ -5,6 +5,7 @@ import {
   createExpense,
   deleteExpense,
 } from "../services/database";
+import { getDates } from "../services/helper";
 
 const initialState = {
   expList: null,
@@ -14,20 +15,14 @@ const initialState = {
   error: null,
 };
 
-const getDates = () => {
-  let f = "HH:mm DD-MMM-YYYY";
-  let mon = moment().format("MMM-YYYY");
-  let dates = {};
-  dates.start = moment(`00:00 01-${mon}`, f).toISOString(true);
-  dates.end = moment(`00:00 01-${mon}`, f).add(1, "month").toISOString(true);
-  return dates;
-};
-
 export const fetchExpAsync = createAsyncThunk(
   "fetchExpenseThunk",
   async (data, { rejectWithValue }) => {
     try {
+      console.log("fetching dates", data);
       const rsp = await fetchExpenses(data);
+      console.log("Rsp -->");
+      console.log(rsp);
       return rsp;
     } catch (error) {
       console.log("catch errro >", error);

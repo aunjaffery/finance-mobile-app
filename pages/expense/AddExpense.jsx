@@ -20,6 +20,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { addExpAsync } from "../../store/expense.slice";
 import { FocusBar } from "../../services/FocusBar";
+import { dFmt, dtFmt, tFmt } from "../../services/helper";
 
 const options = [
   { value: "Daily Essentials", label: "Daily Essentials" },
@@ -43,7 +44,6 @@ const AddExpense = ({ navigation }) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const headHeight = useHeaderHeight();
-  const [dFmt, tFmt, dtFmt] = ["DD MMM YY", "hh:mmA", "hh:mmA DD MMM YY"];
 
   const [timeDate, setTimeDate] = useState(moment().format(dtFmt));
   const [showDateTime, setShowDateTime] = useState(false);
@@ -58,13 +58,13 @@ const AddExpense = ({ navigation }) => {
     if (mode === "date") {
       const formatDate = moment(dt).format(dFmt);
       const orgTime = moment(timeDate, dtFmt).format(tFmt);
-      const fullDate = moment(`${orgTime} ${formatDate}`, dtFmt).format(dtFmt);
+      const fullDate = moment(`${formatDate} ${orgTime}`, dtFmt).format(dtFmt);
       setTimeDate(fullDate);
     }
     if (mode === "time") {
       const formatTime = moment(dt).format(tFmt);
       const orgDate = moment(timeDate, dtFmt).format(dFmt);
-      const fullDate = moment(`${formatTime} ${orgDate}`, dtFmt).format(dtFmt);
+      const fullDate = moment(`${orgDate} ${formatTime}`, dtFmt).format(dtFmt);
       setTimeDate(fullDate);
     }
     setShowDateTime(false);
@@ -87,8 +87,10 @@ const AddExpense = ({ navigation }) => {
 
   const onSubmit = async (data) => {
     try {
-      data.date = moment(timeDate, dtFmt).toISOString(true);
+      data.date = timeDate;
+      //data.date = moment(timeDate, dtFmt).format("YYYY-MM-DD HH:mm:ss");
       //data.title = null;
+      console.log("Adding -->", data);
       await dispatch(addExpAsync(data)).unwrap();
       reset();
       navigation.navigate("Home");
@@ -247,7 +249,7 @@ const AddExpense = ({ navigation }) => {
                   <TouchableOpacity onPress={() => dateTimeVis("date")}>
                     <Box py="2" px="4" bg={inputBg} borderRadius="md">
                       <Text color={inputTextColor} fontSize="md">
-                        {moment(timeDate, dtFmt).format(dFmt)}
+                        {moment(timeDate, dtFmt).format("DD MMM YYYY")}
                       </Text>
                     </Box>
                   </TouchableOpacity>
@@ -259,7 +261,7 @@ const AddExpense = ({ navigation }) => {
                   <TouchableOpacity onPress={() => dateTimeVis("time")}>
                     <Box py="2" px="4" bg={inputBg} borderRadius="md">
                       <Text color={inputTextColor} fontSize="md">
-                        {moment(timeDate, dtFmt).format(tFmt)}
+                        {moment(timeDate, dtFmt).format("hh:mmA")}
                       </Text>
                     </Box>
                   </TouchableOpacity>

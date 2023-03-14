@@ -21,8 +21,8 @@ export const fetchExpenses = (data) => {
     if (!start || !end) reject("Error! Required start and end date");
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM expenses where date BETWEEN ? AND ? ORDER BY date DESC",
-        [start, end],
+        "SELECT * FROM expenses ORDER BY date DESC",
+        [],
         (_, result) => resolve(result.rows._array),
         (_, error) => reject(error)
       );
@@ -37,6 +37,26 @@ export const createExpense = (data) => {
         `INSERT INTO expenses (title, amount, shop, date, description) VALUES (?, ?, ?, ?, ?)`,
         [title, amount, shop, date, description],
         (_, result) => resolve(result.insertId),
+        (_, error) => reject(error)
+      );
+    });
+  });
+};
+export const expByDay = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT
+		   id,
+		   date, 
+		   SUM(amount) sum
+         FROM expenses
+         GROUP BY 
+		   STRFTIME('%d', date)
+		 ORDER BY
+		   date;`,
+        [],
+        (_, result) => resolve(result.rows._array),
         (_, error) => reject(error)
       );
     });
