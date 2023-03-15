@@ -1,3 +1,24 @@
+
+-------------- ToDo ----------------
+-- yearly chart
+-- Gradiant on chart
+-- settings page
+
+
+
+------------- Back Logs ------------
+-- sqlite backup
+
+
+
+
+-------------- Notes ---------------
+-- line charts dont look good. stick with bar!
+
+
+
+
+-------------- DONE ----------------
 -- replacing redux with zustand
 -- fetch api done.
 -- do rest of api and get rid of redux completly

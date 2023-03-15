@@ -22,7 +22,6 @@ const ExpenseCard = ({ exp }) => {
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclose();
   const handleDelete = async () => {
-    console.log(exp.id);
     try {
       if (!exp.id) return;
       await delExpAsync(exp.id);

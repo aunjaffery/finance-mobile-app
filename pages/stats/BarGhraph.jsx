@@ -33,13 +33,9 @@ const BarGraphComp = ({ gdata }) => {
 
   const Labels = ({ x, y }) => {
     let caly = Math.max(0, y(selected.sum) - 50);
+    let calx = Math.max(0, x(selected.index) - 15);
     return (
-      <G
-        key={selected.id}
-        x={x(selected.index) - 15}
-        y={caly}
-        onPress={() => setSelected(null)}
-      >
+      <G key={selected.id} x={calx} y={caly} onPress={() => setSelected(null)}>
         <Rect width="50" height="50" fill="#27272a" />
         <SvgText
           x="25"

@@ -2,38 +2,24 @@ import { Box, Flex, Pressable, Text, useColorModeValue } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useStore } from "../../store/Store";
 import BarGraphComp from "./BarGhraph";
-
-let sam = [
-  { id: 1, date: "Jan", sum: 3000 },
-  { id: 2, date: "Feb", sum: 2000 },
-  { id: 3, date: "Mar", sum: 8000 },
-  { id: 4, date: "Apr", sum: 20800 },
-  { id: 5, date: "May", sum: 30000 },
-  { id: 6, date: "Jun", sum: 15000 },
-  { id: 7, date: "Jul", sum: 28000 },
-  { id: 8, date: "Aug", sum: 18000 },
-  { id: 9, date: "Sep", sum: 5000 },
-  { id: 10, date: "Oct", sum: 18000 },
-  { id: 11, date: "Nov", sum: 13000 },
-  { id: 12, date: "Dec", sum: 20000 },
-];
+import LineGraphComp from "./LineGraph";
 
 const AreaChartComp = () => {
-  const [gdata, setGdata] = useState(sam);
   const [span, setSpan] = useState("month");
   const { getExpDayGraph, dayGraph } = useStore((state) => state);
 
   useEffect(() => {
-    const fn = async () => {
-      try {
-        const exp = await getExpDayGraph();
-      } catch (error) {
-        console.log("IN Error -->");
-        console.log(error);
-      }
-    };
     fn();
   }, [span]);
+
+  const fn = async () => {
+    try {
+      await getExpDayGraph();
+    } catch (error) {
+      console.log("IN Error -->");
+      console.log(error);
+    }
+  };
 
   let bgColor = useColorModeValue("gray.400", "gray.400");
   return (
@@ -60,9 +46,15 @@ const AreaChartComp = () => {
           ))}
         </Flex>
       </Flex>
-      <Flex mt="4" borderWidth="0" borderColor="teal.500">
-        <BarGraphComp gdata={dayGraph} />
-      </Flex>
+      {span === "month" ? (
+        <Flex mt="4" borderWidth="0" borderColor="teal.500">
+          <LineGraphComp gdata={dayGraph} />
+        </Flex>
+      ) : (
+        <Flex mt="4" borderWidth="0" borderColor="teal.500">
+          <BarGraphComp gdata={dayGraph} />
+        </Flex>
+      )}
     </Box>
   );
 };

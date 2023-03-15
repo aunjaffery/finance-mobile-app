@@ -18,7 +18,6 @@ const ExpenseStore = (set, get) => ({
     try {
       set({ loading: true, error: null });
       const rsp = await fetchExpenses(data);
-      console.log("fetch rsp -->", rsp);
       let groupDate;
       let calMonthly;
       if (rsp && rsp.length) {
@@ -71,7 +70,6 @@ const ExpenseStore = (set, get) => ({
     console.log("Called by day graph ==>");
     try {
       let dayGraph = await expByDay(getPrevMonth());
-      console.log("db retrun >>", dayGraph);
       if (dayGraph && dayGraph.length) {
         let ar = dayObj().map((x) => {
           let find = dayGraph.find(
