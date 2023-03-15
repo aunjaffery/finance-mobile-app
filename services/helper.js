@@ -22,3 +22,23 @@ export const getDates = () => {
   dates.end = moment(`${mon}-01 00:00:00`, dtFmt).add(1, "month").format(dtFmt);
   return dates;
 };
+
+export const getPrevMonth = () => {
+  let now = moment().format(dFmt);
+  let dates = {};
+  dates.start = moment().subtract(29, "days").format(dFmt);
+  dates.end = moment().add(1, "day").format(dFmt);
+  console.log("mon dates ==>", dates);
+  return dates;
+};
+
+export const dayObj = () => {
+  console.log("day called -->");
+  let obj = [];
+  for (let i = 29; i >= 0; i--) {
+    let dd = moment().subtract(i, "day").format(dFmt);
+    obj.push({ id: i + 1, date: dd });
+  }
+  console.log("len", obj.length);
+  return obj;
+};

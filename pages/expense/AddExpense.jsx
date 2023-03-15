@@ -40,7 +40,6 @@ const options = [
 
 const AddExpense = ({ navigation }) => {
   const { addExpAsync, addLoading } = useStore((state) => state);
-  console.log("states -->", addLoading);
   const toast = useToast();
   const headHeight = useHeaderHeight();
 
@@ -88,8 +87,7 @@ const AddExpense = ({ navigation }) => {
     try {
       data.date = timeDate;
       //data.title = null;
-      const adding = await addExpAsync(data);
-      console.log(adding);
+      await addExpAsync(data);
       reset();
       navigation.navigate("Home");
     } catch (error) {

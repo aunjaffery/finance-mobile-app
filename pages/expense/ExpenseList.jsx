@@ -7,7 +7,7 @@ import { useStore } from "../../store/Store";
 
 const ExpenseList = ({ topColor }) => {
   const { loading, expList, monthlyTotal } = useStore((state) => state);
-	//console.log("ZUS exp ->" ,expList)
+
   if (loading) {
     return <ExpCardSkl />;
   }

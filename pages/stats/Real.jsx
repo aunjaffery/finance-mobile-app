@@ -1,15 +1,7 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Pressable,
-  Text,
-  useColorModeValue,
-} from "native-base";
+import { Box, Flex, Pressable, Text, useColorModeValue } from "native-base";
 import React, { useEffect, useState } from "react";
-import { expByDay } from "../../services/database";
+import { useStore } from "../../store/Store";
 import BarGraphComp from "./BarGhraph";
-import PieGraph from "./PieGraph";
 
 let sam = [
   { id: 1, date: "Jan", sum: 3000 },
@@ -27,23 +19,21 @@ let sam = [
 ];
 
 const AreaChartComp = () => {
-  const [gdata, setGdata] = useState([]);
+  const [gdata, setGdata] = useState(sam);
   const [span, setSpan] = useState("month");
+  const { getExpDayGraph, dayGraph } = useStore((state) => state);
 
   useEffect(() => {
     const fn = async () => {
       try {
-        const exp = await expByDay();
-        console.log("getting graphs -->");
-        console.log(exp);
-        setGdata(exp);
+        const exp = await getExpDayGraph();
       } catch (error) {
         console.log("IN Error -->");
         console.log(error);
       }
     };
     fn();
-  }, []);
+  }, [span]);
 
   let bgColor = useColorModeValue("gray.400", "gray.400");
   return (
@@ -71,7 +61,7 @@ const AreaChartComp = () => {
         </Flex>
       </Flex>
       <Flex mt="4" borderWidth="0" borderColor="teal.500">
-        <BarGraphComp gdata={gdata} />
+        <BarGraphComp gdata={dayGraph} />
       </Flex>
     </Box>
   );

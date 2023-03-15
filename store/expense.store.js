@@ -3,8 +3,9 @@ import {
   createExpense,
   deleteExpense,
   fetchExpenses,
+  expByDay,
 } from "../services/database";
-import { getDates } from "../services/helper";
+import { dayObj, getDates, getPrevMonth, dFmt } from "../services/helper";
 
 const ExpenseStore = (set, get) => ({
   expList: null,
@@ -12,11 +13,12 @@ const ExpenseStore = (set, get) => ({
   loading: false,
   addLoading: false,
   error: null,
+  dayGraph: [],
   fetchExpAsync: async (data) => {
     try {
       set({ loading: true, error: null });
       const rsp = await fetchExpenses(data);
-      console.log("fetch expense Zus -->", rsp);
+      console.log("fetch rsp -->", rsp);
       let groupDate;
       let calMonthly;
       if (rsp && rsp.length) {
@@ -63,6 +65,27 @@ const ExpenseStore = (set, get) => ({
     } catch (error) {
       console.log("Del error -->", error);
       throw "Error! Cannot delete expense";
+    }
+  },
+  getExpDayGraph: async () => {
+    console.log("Called by day graph ==>");
+    try {
+      let dayGraph = await expByDay(getPrevMonth());
+      console.log("db retrun >>", dayGraph);
+      if (dayGraph && dayGraph.length) {
+        let ar = dayObj().map((x) => {
+          let find = dayGraph.find(
+            (f) => x.date === moment(f.date).format(dFmt)
+          );
+          find ? (x.sum = find?.sum) : (x.sum = 0);
+          return x;
+        });
+        set({ dayGraph: ar });
+      } else {
+        set({ dayGraph: [] });
+      }
+    } catch (error) {
+      console.log(error);
     }
   },
 });
