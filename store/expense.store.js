@@ -1,7 +1,12 @@
 import moment from "moment";
-import { fetchExpenses } from "../services/database";
+import {
+  createExpense,
+  deleteExpense,
+  fetchExpenses,
+} from "../services/database";
+import { getDates } from "../services/helper";
 
-const ExpenseStore = (set, _) => ({
+const ExpenseStore = (set, get) => ({
   expList: null,
   monthlyTotal: null,
   loading: false,
@@ -36,6 +41,28 @@ const ExpenseStore = (set, _) => ({
     } catch (error) {
       console.log(error);
       set({ loading: false, error: error });
+    }
+  },
+  addExpAsync: async (data) => {
+    try {
+      set({ addLoading: true });
+      console.log("ADD -->", data);
+      await createExpense(data);
+      await get().fetchExpAsync(getDates());
+      set({ addLoading: false });
+    } catch (error) {
+      set({ addLoading: false });
+      throw "Error! Cannot create expense";
+    }
+  },
+  delExpAsync: async (id) => {
+    try {
+      console.log("deleteing expense -->", id);
+      await deleteExpense(id);
+      await get().fetchExpAsync(getDates());
+    } catch (error) {
+      console.log("Del error -->", error);
+      throw "Error! Cannot delete expense";
     }
   },
 });

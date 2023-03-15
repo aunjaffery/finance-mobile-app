@@ -17,10 +17,9 @@ import { Controller, useForm } from "react-hook-form";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Platform, TouchableOpacity } from "react-native";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { useDispatch, useSelector } from "react-redux";
-import { addExpAsync } from "../../store/expense.slice";
 import { FocusBar } from "../../services/FocusBar";
 import { dFmt, dtFmt, tFmt } from "../../services/helper";
+import { useStore } from "../../store/Store";
 
 const options = [
   { value: "Daily Essentials", label: "Daily Essentials" },
@@ -40,8 +39,8 @@ const options = [
 ];
 
 const AddExpense = ({ navigation }) => {
-  const { addLoading } = useSelector((state) => state.expense);
-  const dispatch = useDispatch();
+  const { addExpAsync, addLoading } = useStore((state) => state);
+  console.log("states -->", addLoading);
   const toast = useToast();
   const headHeight = useHeaderHeight();
 
@@ -88,10 +87,9 @@ const AddExpense = ({ navigation }) => {
   const onSubmit = async (data) => {
     try {
       data.date = timeDate;
-      //data.date = moment(timeDate, dtFmt).format("YYYY-MM-DD HH:mm:ss");
       //data.title = null;
-      console.log("Adding -->", data);
-      await dispatch(addExpAsync(data)).unwrap();
+      const adding = await addExpAsync(data);
+      console.log(adding);
       reset();
       navigation.navigate("Home");
     } catch (error) {

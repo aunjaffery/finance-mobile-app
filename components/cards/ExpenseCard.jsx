@@ -13,22 +13,19 @@ import Feather from "@expo/vector-icons/Feather";
 import { Swipeable } from "react-native-gesture-handler";
 import { ExpIconDynamic } from "../../icons/ExpIconDynamic2";
 import { ExpenseDetail } from "../modals/ExpenseDetail";
-import { useDispatch } from "react-redux";
-import { delExpAsync } from "../../store/expense.slice";
 import { globalTheme } from "../../services/theme";
 import { formatCash } from "../../services/helper";
+import { useStore } from "../../store/Store";
 
 const ExpenseCard = ({ exp }) => {
-  const dispatch = useDispatch();
+  const { delExpAsync } = useStore((state) => state);
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclose();
   const handleDelete = async () => {
     console.log(exp.id);
     try {
-      if (!exp.id) {
-        //toast
-      }
-      await dispatch(delExpAsync(exp.id)).unwrap();
+      if (!exp.id) return;
+      await delExpAsync(exp.id);
     } catch (error) {
       toast.show({
         duration: 2000,

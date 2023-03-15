@@ -11,7 +11,6 @@ import {
 } from "native-base";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { fetchExpAsync } from "../../store/expense.slice";
 import ExpenseList from "./ExpenseList";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Platform } from "react-native";
@@ -36,7 +35,6 @@ const Expense = () => {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect Fetching expense -->");
     let start = moment(`${selectedMon}-01 00:00:00`, dtFmt).format(dtFmt);
     let end = moment(`${selectedMon}-01 00:00:00`, dtFmt)
       .add(1, "month")

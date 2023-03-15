@@ -4,8 +4,6 @@ import { Text, View } from "react-native";
 import { InitDb } from "./services/database";
 import AppNavigation from "./services/AppNavigation";
 import { globalTheme, nativeBaseTheme } from "./services/theme";
-import { Provider } from "react-redux";
-import { store } from "./store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   useFonts,
@@ -52,11 +50,9 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <Provider store={store}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <AppNavigation />
-        </GestureHandlerRootView>
-      </Provider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AppNavigation />
+      </GestureHandlerRootView>
     </NativeBaseProvider>
   );
 }
