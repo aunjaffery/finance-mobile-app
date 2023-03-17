@@ -4,8 +4,15 @@ import {
   deleteExpense,
   fetchExpenses,
   expByDay,
+  expByMonth,
 } from "../services/database";
-import { dayObj, getDates, getPrevMonth, dFmt } from "../services/helper";
+import {
+  dayObj,
+  getDates,
+  getPrevMonth,
+  getPrevYear,
+  monthObj,
+} from "../services/helper";
 
 const ExpenseStore = (set, get) => ({
   expList: null,
@@ -14,6 +21,8 @@ const ExpenseStore = (set, get) => ({
   addLoading: false,
   error: null,
   dayGraph: [],
+  monthGraph: [],
+  graphLoading: false,
   fetchExpAsync: async (data) => {
     try {
       set({ loading: true, error: null });
@@ -69,20 +78,40 @@ const ExpenseStore = (set, get) => ({
   getExpDayGraph: async () => {
     console.log("Called by day graph ==>");
     try {
+      set({ graphLoading: true });
       let dayGraph = await expByDay(getPrevMonth());
       if (dayGraph && dayGraph.length) {
         let ar = dayObj().map((x) => {
-          let find = dayGraph.find(
-            (f) => x.date === moment(f.date).format(dFmt)
-          );
+          let find = dayGraph.find((f) => x.date === f.date);
           find ? (x.sum = find?.sum) : (x.sum = 0);
           return x;
         });
-        set({ dayGraph: ar });
+        set({ dayGraph: ar, graphLoading: false });
       } else {
-        set({ dayGraph: [] });
+        set({ dayGraph: [], graphLoading: false });
       }
     } catch (error) {
+      set({ graphLoading: false });
+      console.log(error);
+    }
+  },
+  getExpMonthGraph: async () => {
+    console.log("Called by month graph ==>");
+    try {
+      set({ graphLoading: true });
+      let monthGraph = await expByMonth(getPrevYear());
+      if (monthGraph && monthGraph.length) {
+        let ar = monthObj().map((x) => {
+          let find = monthGraph.find((f) => x.date === f.date);
+          find ? (x.sum = find?.sum) : (x.sum = 0);
+          return x;
+        });
+        set({ monthGraph: ar, graphLoading: false });
+      } else {
+        set({ monthGraph: [], graphLoading: false });
+      }
+    } catch (error) {
+      set({ graphLoading: false });
       console.log(error);
     }
   },

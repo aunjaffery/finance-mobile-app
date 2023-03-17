@@ -1,6 +1,7 @@
 
 -------------- ToDo ----------------
--- yearly chart
+-- somehow onPress handler is effecting xAxis.
+-- check xAxis again. I removed rotation
 -- Gradiant on chart
 -- settings page
 
@@ -19,6 +20,7 @@
 
 
 -------------- DONE ----------------
+-- yearly chart
 -- replacing redux with zustand
 -- fetch api done.
 -- do rest of api and get rid of redux completly

@@ -6,7 +6,13 @@ export const InitDb = () => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY NOT NULL, title TEXT NOT NULL, amount INT NOT NULL, shop TEXT, date TEXT NOT NULL, description TEXT)",
+        `CREATE TABLE IF NOT EXISTS expenses
+		   (id INTEGER PRIMARY KEY NOT NULL,
+			title TEXT NOT NULL,
+			amount INT NOT NULL,
+			shop TEXT,
+			date TEXT NOT NULL,
+			description TEXT)`,
         [],
         resolve,
         (_, error) => reject(error)
@@ -55,6 +61,28 @@ export const expByDay = (data) => {
 		   date BETWEEN ? AND ?
          GROUP BY 
 		   STRFTIME('%Y-%m-%d', date)
+		 ORDER BY date;`,
+        [start, end],
+        (_, result) => resolve(result.rows._array),
+        (_, error) => reject(error)
+      );
+    });
+  });
+};
+
+export const expByMonth = (data) => {
+  const { start, end } = data;
+  return new Promise((resolve, reject) => {
+    if (!start || !end) reject("Error! Required start and end date");
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT
+		   id, STRFTIME('%Y-%m', date) date, SUM(amount) sum
+         FROM expenses
+		 WHERE
+		   date BETWEEN ? AND ?
+         GROUP BY 
+		   STRFTIME('%Y-%m', date)
 		 ORDER BY date;`,
         [start, end],
         (_, result) => resolve(result.rows._array),

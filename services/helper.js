@@ -27,20 +27,34 @@ export const getPrevMonth = () => {
   let dates = {};
   dates.start = moment().subtract(19, "days").format(dFmt);
   dates.end = moment().add(1, "day").format(dFmt);
-  console.log("mon dates ==>", dates);
   return dates;
 };
 
 export const dayObj = () => {
-  console.log("day called -->");
   let obj = [];
   for (let i = 19; i >= 0; i--) {
     let dd = moment().subtract(i, "day").format(dFmt);
     obj.push({ id: i + 1, date: dd });
   }
-  console.log("len", obj.length);
   return obj;
 };
+
+export const getPrevYear = () => {
+  let dates = {};
+  dates.start = moment().subtract(12, "months").format(mFmt);
+  dates.end = moment().add(1, "month").format(mFmt);
+  return dates;
+};
+
+export const monthObj = () => {
+  let obj = [];
+  for (let i = 11; i >= 0; i--) {
+    let dd = moment().subtract(i, "month").format(mFmt);
+    obj.push({ id: i + 1, date: dd });
+  }
+  return obj;
+};
+
 
 export const sample = [
   { id: 1, date: "Jan", sum: 3000 },

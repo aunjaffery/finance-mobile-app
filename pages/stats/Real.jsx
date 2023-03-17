@@ -1,12 +1,24 @@
-import { Box, Flex, Pressable, Text, useColorModeValue } from "native-base";
+import {
+  Box,
+  Flex,
+  Pressable,
+  Spinner,
+  Text,
+  useColorModeValue,
+} from "native-base";
 import React, { useEffect, useState } from "react";
 import { useStore } from "../../store/Store";
 import BarGraphComp from "./BarGhraph";
-import LineGraphComp from "./LineGraph";
 
 const AreaChartComp = () => {
   const [span, setSpan] = useState("month");
-  const { getExpDayGraph, dayGraph } = useStore((state) => state);
+  const {
+    graphLoading,
+    getExpDayGraph,
+    getExpMonthGraph,
+    dayGraph,
+    monthGraph,
+  } = useStore((state) => state);
 
   useEffect(() => {
     fn();
@@ -14,7 +26,11 @@ const AreaChartComp = () => {
 
   const fn = async () => {
     try {
-      await getExpDayGraph();
+      if (span === "month") {
+        await getExpDayGraph();
+      } else {
+        await getExpMonthGraph();
+      }
     } catch (error) {
       console.log("IN Error -->");
       console.log(error);
@@ -22,6 +38,15 @@ const AreaChartComp = () => {
   };
 
   let bgColor = useColorModeValue("gray.400", "gray.400");
+  const gHeight = 300;
+
+  const LoadingComp = () => {
+    return (
+      <Flex h={gHeight} justify="center" align="center">
+        <Spinner color="indigo.500" />
+      </Flex>
+    );
+  };
   return (
     <Box mt="4">
       <Flex direction="row" justify="flex-end" mr="2">
@@ -48,11 +73,19 @@ const AreaChartComp = () => {
       </Flex>
       {span === "month" ? (
         <Flex mt="4" borderWidth="0" borderColor="teal.500">
-          <LineGraphComp gdata={dayGraph} />
+          {graphLoading ? (
+            <LoadingComp />
+          ) : (
+            <BarGraphComp gdata={dayGraph} type="month" gHeight={gHeight} />
+          )}
         </Flex>
       ) : (
         <Flex mt="4" borderWidth="0" borderColor="teal.500">
-          <BarGraphComp gdata={dayGraph} />
+          {graphLoading ? (
+            <LoadingComp />
+          ) : (
+            <BarGraphComp gdata={monthGraph} type="year" gHeight={gHeight} />
+          )}
         </Flex>
       )}
     </Box>
