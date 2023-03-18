@@ -21,14 +21,16 @@ export const InitDb = () => {
   });
 };
 
-export const fetchExpenses = (data) => {
-  const { start, end } = data;
+export const fetchExpenses = (month) => {
   return new Promise((resolve, reject) => {
-    if (!start || !end) reject("Error! Required start and end date");
+    if (!month) reject("Error! Required start and end date");
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM expenses where date BETWEEN ? AND ? ORDER BY date DESC",
-        [start, end],
+        `SELECT * FROM expenses
+		 WHERE
+		   STRFTIME('%Y-%m', date) = ?
+		 ORDER BY date DESC;`,
+        [month],
         (_, result) => resolve(result.rows._array),
         (_, error) => reject(error)
       );

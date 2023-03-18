@@ -10,6 +10,7 @@ const BarGraphComp = ({ gdata, type, gHeight }) => {
   const fcolor = "#818cf8";
   const txtColor = useColorModeValue("black", "white");
   const gridColor = useColorModeValue("#e4e4e7", "#1f2937");
+  const ttipColor = useColorModeValue("#3f3f46", "#27272a");
   const [selected, setSelected] = useState(null);
 
   const handlePress = (s, index) => {
@@ -25,19 +26,19 @@ const BarGraphComp = ({ gdata, type, gHeight }) => {
     ...s,
     index,
     svg: {
-      fillOpacity: selected?.id === s.id ? 1 : 0.2,
+      fill: selected?.id === s.id ? "#6366f1" : fcolor,
       onPress: () => handlePress(s, index),
     },
   }));
 
   const Labels = ({ x, y }) => {
     let caly = Math.max(0, y(selected.sum) - 50);
-    let calx = Math.max(0, x(selected.index) - 25);
+    let calx = Math.max(0, x(selected.index) - 30);
     return (
       <G key={selected.id} x={calx} y={caly} onPress={() => setSelected(null)}>
-        <Rect width="50" height="50" fill="#27272a" />
+        <Rect width={60} height="50" fill={ttipColor} />
         <SvgText
-          x="25"
+          x={30}
           y="20"
           fill={fcolor}
           fontSize="12"
@@ -45,11 +46,11 @@ const BarGraphComp = ({ gdata, type, gHeight }) => {
           fontWeight="bold"
         >
           {`${moment(selected.date).format(
-            type === "year" ? "MMM YYYY" : "DD MMM"
+            type === "year" ? "MMM" : "DD MMM"
           )}`}
         </SvgText>
         <SvgText
-          x="25"
+          x={30}
           y="40"
           fill="white"
           fontSize="14"
@@ -98,12 +99,7 @@ const BarGraphComp = ({ gdata, type, gHeight }) => {
           data={data}
           xAccessor={({ item }) => item.date}
           yAccessor={({ item }) => item.sum}
-          svg={{
-            fill: fcolor,
-            stroke: fcolor,
-            strokeWidth: 1,
-            fillOpacity: 0.2,
-          }}
+          svg={{ fill: fcolor }}
           spacingInner={0.2}
           contentInset={{ top: 10, left: 10, bottom: 10, right: 10 }}
           numberOfTicks={6}
@@ -112,22 +108,29 @@ const BarGraphComp = ({ gdata, type, gHeight }) => {
           {selected?.sum && <Labels />}
         </BarChart>
         <XAxis
-          data={data}
+          data={gdata}
           style={{ height: 30, borderWidth: 0 }}
           svg={{
             fill: txtColor,
             fontSize: 10,
-            fillOpacity: 1,
           }}
-          numberOfTicks={6}
-          xAccessor={({ item }) => moment(item.date).toDate()}
-          scale={scale.scaleLinear}
-          formatLabel={(value) => {
-            return moment(value).format(type === "year" ? "MMM YY" : "D MMM");
+          numberOfTicks={10}
+          xAccessor={({ item }) => {
+            return moment(item.date).valueOf();
+          }}
+          scale={scale.scaleTime}
+          formatLabel={(value, index) => {
+            if (type === "year") {
+              return moment(value).format("MMM");
+            } else {
+              if (index % 2 === 0) {
+                return moment(value).format("D MMM");
+              } else return "";
+            }
           }}
           contentInset={{
-            left: type === "year" ? 10 : 10,
-            right: type === "year" ? 36 : 20,
+            left: type === "year" ? 20 : 20,
+            right: type === "year" ? 22 : 20,
           }}
         />
       </Box>

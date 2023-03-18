@@ -8,9 +8,9 @@ import {
 } from "../services/database";
 import {
   dayObj,
-  getDates,
   getPrevMonth,
   getPrevYear,
+  mFmt,
   monthObj,
 } from "../services/helper";
 
@@ -23,15 +23,23 @@ const ExpenseStore = (set, get) => ({
   dayGraph: [],
   monthGraph: [],
   graphLoading: false,
-  fetchExpAsync: async (data) => {
+  selectedMon: moment().format(mFmt),
+  setSelectedMon: async (month) => {
+    set({ selectedMon: month });
+    await get().fetchExpAsync();
+  },
+  fetchExpAsync: async () => {
+    console.log("this >", get().selectedMon);
     try {
       set({ loading: true, error: null });
-      const rsp = await fetchExpenses(data);
+      const rsp = await fetchExpenses(get().selectedMon);
       let groupDate;
       let calMonthly;
       if (rsp && rsp.length) {
         calMonthly = rsp.reduce((total, cur) => {
-          return (total += cur.amount);
+          let t = (total += cur.amount);
+          let f = parseFloat(t.toFixed(2));
+          return f;
         }, 0);
         groupDate = rsp.reduce(function (val, obj) {
           let comp = moment(obj["date"]).format("DD MMM");
@@ -58,7 +66,7 @@ const ExpenseStore = (set, get) => ({
       set({ addLoading: true });
       console.log("ADD -->", data);
       await createExpense(data);
-      await get().fetchExpAsync(getDates());
+      get().setSelectedMon(moment(data?.date).format(mFmt));
       set({ addLoading: false });
     } catch (error) {
       set({ addLoading: false });
@@ -69,7 +77,7 @@ const ExpenseStore = (set, get) => ({
     try {
       console.log("deleteing expense -->", id);
       await deleteExpense(id);
-      await get().fetchExpAsync(getDates());
+      await get().fetchExpAsync();
     } catch (error) {
       console.log("Del error -->", error);
       throw "Error! Cannot delete expense";

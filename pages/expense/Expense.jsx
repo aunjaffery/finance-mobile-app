@@ -16,31 +16,28 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { Platform } from "react-native";
 import { globalTheme } from "../../services/theme";
 import { FocusBar } from "../../services/FocusBar";
-import { dtFmt, mFmt } from "../../services/helper";
+import { mFmt } from "../../services/helper";
 import { useStore } from "../../store/Store";
 
 const Expense = () => {
   //var log = logger.createLogger();
-  const [selectedMon, setSelectedMon] = useState(moment().format(mFmt));
   const [monList, setMonList] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclose();
-  const { fetchExpAsync } = useStore((state) => state);
+  const { fetchExpAsync, selectedMon, setSelectedMon } = useStore(
+    (state) => state
+  );
 
   useEffect(() => {
     let monthArr = [];
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i <= 5; i++) {
       monthArr.push(moment().subtract(i, "month").format(mFmt));
     }
     setMonList(monthArr);
   }, []);
 
   useEffect(() => {
-    let start = moment(`${selectedMon}-01 00:00:00`, dtFmt).format(dtFmt);
-    let end = moment(`${selectedMon}-01 00:00:00`, dtFmt)
-      .add(1, "month")
-      .format(dtFmt);
-    fetchExpAsync({ start, end });
-  }, [selectedMon]);
+    fetchExpAsync();
+  }, []);
 
   const topColor = useColorModeValue(
     globalTheme.light.secondary,

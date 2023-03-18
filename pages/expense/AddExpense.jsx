@@ -100,7 +100,6 @@ const AddExpense = ({ navigation }) => {
           </Box>
         ),
       });
-      console.log("Unwrap error ->", error);
     }
   };
 
@@ -187,6 +186,8 @@ const AddExpense = ({ navigation }) => {
                     borderColor="red.400"
                     borderWidth={errors?.amount ? 1 : 0}
                     size="lg"
+                    step="0.01"
+                    min={1}
                     bg={inputBg}
                     placeholderTextColor="gray.500"
                     color={inputTextColor}
@@ -203,6 +204,8 @@ const AddExpense = ({ navigation }) => {
                     value: true,
                     message: "Amount is required!",
                   },
+                  min: 1,
+                  pattern: /^\d{0,8}(\.\d{1,2})?$/,
                 }}
               />
             </Box>
@@ -319,6 +322,8 @@ const AddExpense = ({ navigation }) => {
         mode={mode}
         onConfirm={handleDateTime}
         onCancel={() => setShowDateTime(false)}
+        maximumDate={moment().toDate()}
+        minimumDate={moment().subtract(6, "months").toDate()}
       />
     </Box>
   );

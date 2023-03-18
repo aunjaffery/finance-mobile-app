@@ -72,7 +72,7 @@ const AreaChartComp = () => {
         </Flex>
       </Flex>
       {span === "month" ? (
-        <Flex mt="4" borderWidth="0" borderColor="teal.500">
+        <Flex mt="6" borderWidth="0" borderColor="teal.500">
           {graphLoading ? (
             <LoadingComp />
           ) : (

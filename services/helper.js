@@ -15,14 +15,6 @@ export const [mFmt, dFmt, tFmt, dtFmt] = [
   "YYYY-MM-DD HH:mm:00",
 ];
 
-export const getDates = () => {
-  let mon = moment().format(mFmt);
-  let dates = {};
-  dates.start = moment(`${mon}-01 00:00:00`, dtFmt).format(dtFmt);
-  dates.end = moment(`${mon}-01 00:00:00`, dtFmt).add(1, "month").format(dtFmt);
-  return dates;
-};
-
 export const getPrevMonth = () => {
   let dates = {};
   dates.start = moment().subtract(19, "days").format(dFmt);
@@ -54,7 +46,6 @@ export const monthObj = () => {
   }
   return obj;
 };
-
 
 export const sample = [
   { id: 1, date: "Jan", sum: 3000 },

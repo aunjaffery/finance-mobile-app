@@ -1,9 +1,9 @@
 
 -------------- ToDo ----------------
--- somehow onPress handler is effecting xAxis.
--- check xAxis again. I removed rotation
--- Gradiant on chart
 -- settings page
+-- global currency variable
+-- check and catch error on very api
+-- QA
 
 
 
@@ -20,6 +20,11 @@
 
 
 -------------- DONE ----------------
+-- check xAxis again. I removed rotation
+-- form checks
+-- Gradiant on chart
+-- somehow onPress handler is effecting xAxis.
+-- default expenses fetched after deleting. but month dont change.
 -- yearly chart
 -- replacing redux with zustand
 -- fetch api done.
