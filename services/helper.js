@@ -8,12 +8,30 @@ export const formatCash = (n) => {
   if (n >= 1e12) return +(n / 1e12).toFixed(1) + "T";
 };
 
+export const randomColors = [
+  "green.400",
+  "indigo.400",
+  "yellow.400",
+  "purple.400",
+  "red.400",
+  "orange.400",
+];
+
 export const [mFmt, dFmt, tFmt, dtFmt] = [
   "YYYY-MM",
   "YYYY-MM-DD",
   "HH:mm:00",
   "YYYY-MM-DD HH:mm:00",
 ];
+
+export const ListMonths = () => {
+	console.log("List Months called xxxx->")
+  let monthArr = [];
+  for (let i = 0; i <= 5; i++) {
+    monthArr.push(moment().subtract(i, "month").format(mFmt));
+  }
+  return monthArr;
+};
 
 export const getPrevMonth = () => {
   let dates = {};

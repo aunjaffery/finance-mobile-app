@@ -5,12 +5,18 @@ import {
   Spinner,
   Text,
   useColorModeValue,
+  useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
+import { logger } from "react-native-logs";
+import { FocusBar } from "../../services/FocusBar";
 import { useStore } from "../../store/Store";
 import BarGraphComp from "./BarGhraph";
+import CatGraph from "./CatGraph";
 
 const AreaChartComp = () => {
+  let log = logger.createLogger();
+  const toast = useToast();
   const [span, setSpan] = useState("month");
   const {
     graphLoading,
@@ -34,6 +40,15 @@ const AreaChartComp = () => {
     } catch (error) {
       console.log("IN Error -->");
       console.log(error);
+      toast.show({
+        duration: 2000,
+        placement: "top",
+        render: () => (
+          <Box bg="red.400" px="4" py="2">
+            <Text>Oops! Somthing went wrong...</Text>
+          </Box>
+        ),
+      });
     }
   };
 
@@ -47,47 +62,53 @@ const AreaChartComp = () => {
       </Flex>
     );
   };
+  //log.info("rending Times ------------->");
   return (
     <Box mt="4">
-      <Flex direction="row" justify="flex-end" mr="2">
-        <Flex direction="row" bg={bgColor} borderRadius="md">
-          {["month", "year"].map((x, id) => (
-            <Pressable onPress={() => setSpan(x)} key={id}>
-              <Box
-                bg={span === x ? "indigo.500" : bgColor}
-                px="2"
-                py="1"
-                borderRadius="md"
-              >
-                <Text
-                  color="white"
-                  textTransform="capitalize"
-                  fontWeight="bold"
+      <FocusBar />
+      <CatGraph />
+      <Box mt="6">
+        <Flex direction="row" justify="flex-end" mr="2">
+          <Flex direction="row" bg={bgColor} borderRadius="md">
+            {["month", "year"].map((x, id) => (
+              <Pressable onPress={() => setSpan(x)} key={id}>
+                <Box
+                  bg={span === x ? "indigo.500" : bgColor}
+                  px="2"
+                  py="1"
+                  borderRadius="md"
                 >
-                  {x}
-                </Text>
-              </Box>
-            </Pressable>
-          ))}
+                  <Text
+                    color="white"
+                    textTransform="capitalize"
+                    fontWeight="bold"
+                    fontSize="xs"
+                  >
+                    {x}
+                  </Text>
+                </Box>
+              </Pressable>
+            ))}
+          </Flex>
         </Flex>
-      </Flex>
-      {span === "month" ? (
-        <Flex mt="6" borderWidth="0" borderColor="teal.500">
-          {graphLoading ? (
-            <LoadingComp />
-          ) : (
-            <BarGraphComp gdata={dayGraph} type="month" gHeight={gHeight} />
-          )}
-        </Flex>
-      ) : (
-        <Flex mt="4" borderWidth="0" borderColor="teal.500">
-          {graphLoading ? (
-            <LoadingComp />
-          ) : (
-            <BarGraphComp gdata={monthGraph} type="year" gHeight={gHeight} />
-          )}
-        </Flex>
-      )}
+        {span === "month" ? (
+          <Flex mt="6" borderWidth="0" borderColor="teal.500">
+            {graphLoading ? (
+              <LoadingComp />
+            ) : (
+              <BarGraphComp gdata={dayGraph} type="month" gHeight={gHeight} />
+            )}
+          </Flex>
+        ) : (
+          <Flex mt="4" borderWidth="0" borderColor="teal.500">
+            {graphLoading ? (
+              <LoadingComp />
+            ) : (
+              <BarGraphComp gdata={monthGraph} type="year" gHeight={gHeight} />
+            )}
+          </Flex>
+        )}
+      </Box>
     </Box>
   );
 };

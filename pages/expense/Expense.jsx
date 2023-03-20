@@ -16,7 +16,7 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { Platform } from "react-native";
 import { globalTheme } from "../../services/theme";
 import { FocusBar } from "../../services/FocusBar";
-import { mFmt } from "../../services/helper";
+import { ListMonths, mFmt } from "../../services/helper";
 import { useStore } from "../../store/Store";
 
 const Expense = () => {
@@ -28,15 +28,8 @@ const Expense = () => {
   );
 
   useEffect(() => {
-    let monthArr = [];
-    for (let i = 0; i <= 5; i++) {
-      monthArr.push(moment().subtract(i, "month").format(mFmt));
-    }
-    setMonList(monthArr);
-  }, []);
-
-  useEffect(() => {
     fetchExpAsync();
+    setMonList(ListMonths());
   }, []);
 
   const topColor = useColorModeValue(

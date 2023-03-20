@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Box, Flex, useColorModeValue } from "native-base";
+import { Box, Flex, Text, useColorModeValue } from "native-base";
 import React, { useState } from "react";
 import * as scale from "d3-scale";
 import { Grid, YAxis, BarChart, XAxis } from "react-native-svg-charts";
@@ -11,7 +11,15 @@ const BarGraphComp = ({ gdata, type, gHeight }) => {
   const txtColor = useColorModeValue("black", "white");
   const gridColor = useColorModeValue("#e4e4e7", "#1f2937");
   const ttipColor = useColorModeValue("#3f3f46", "#27272a");
+  const secTextColor = useColorModeValue("gray.500", "gray.400");
   const [selected, setSelected] = useState(null);
+  if (!gdata || !gdata.length) {
+    return (
+      <Flex h={gHeight} justify="center" align="center">
+        <Text color={secTextColor}>No data found!</Text>
+      </Flex>
+    );
+  }
 
   const handlePress = (s, index) => {
     s.index = index;

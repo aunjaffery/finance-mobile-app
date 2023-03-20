@@ -5,6 +5,7 @@ import {
   fetchExpenses,
   expByDay,
   expByMonth,
+  expByCat,
 } from "../services/database";
 import {
   dayObj,
@@ -28,6 +29,8 @@ const ExpenseStore = (set, get) => ({
     set({ selectedMon: month });
     await get().fetchExpAsync();
   },
+  catLoading: false,
+  catGraph: [],
   fetchExpAsync: async () => {
     console.log("this >", get().selectedMon);
     try {
@@ -66,7 +69,7 @@ const ExpenseStore = (set, get) => ({
       set({ addLoading: true });
       console.log("ADD -->", data);
       await createExpense(data);
-      get().setSelectedMon(moment(data?.date).format(mFmt));
+      await get().fetchExpAsync();
       set({ addLoading: false });
     } catch (error) {
       set({ addLoading: false });
@@ -120,6 +123,21 @@ const ExpenseStore = (set, get) => ({
       }
     } catch (error) {
       set({ graphLoading: false });
+      console.log(error);
+    }
+  },
+  getExpByCat: async (mon) => {
+    console.log("Called by Cat graph ==>");
+    try {
+      set({ catLoading: true });
+      let rsp = await expByCat(mon);
+      if (rsp && rsp.length) {
+        set({ catGraph: rsp, catLoading: false });
+      } else {
+        set({ catGraph: [], catLoading: false });
+      }
+    } catch (error) {
+      set({ catLoading: false });
       console.log(error);
     }
   },

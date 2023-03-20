@@ -5,7 +5,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Entypo from "@expo/vector-icons/Entypo";
 import Expense from "../pages/expense/Expense";
 import AddExpense from "../pages/expense/AddExpense";
-import Settings from "../pages/settings/Settings";
 import { globalTheme, navThemeDark, navThemeLight } from "./theme";
 import { Box, useColorModeValue } from "native-base";
 import { Platform, StatusBar } from "react-native";
@@ -13,6 +12,7 @@ import * as NavigationBar from "expo-navigation-bar";
 import { useEffect } from "react";
 import AreaChartComp from "../pages/stats/Real";
 import { useStore } from "../store/Store";
+import SettingStack from "./StackNavigation";
 
 const Tab = createBottomTabNavigator();
 const AppNavigation = () => {
@@ -73,11 +73,12 @@ const AppNavigation = () => {
           />
           <Tab.Screen
             name="Settings"
-            component={Settings}
+            component={SettingStack}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <AntDesign name="setting" size={size} color={color} />
               ),
+              headerShown: false,
             }}
           />
         </Tab.Navigator>

@@ -28,7 +28,7 @@ const options = [
   { value: "Food", label: "Food" },
   { value: "Groceries", label: "Groceries" },
   { value: "Investment", label: "Investment" },
-  { value: "Medicine", label: "Medicine" },
+  { value: "Medical", label: "Medical" },
   { value: "Shopping", label: "Shopping" },
   { value: "Self Care", label: "Self Care" },
   { value: "Stationery", label: "Stationery" },
@@ -88,8 +88,17 @@ const AddExpense = ({ navigation }) => {
       data.date = timeDate;
       //data.title = null;
       await addExpAsync(data);
+      console.log(data);
       reset();
-      navigation.navigate("Home");
+      toast.show({
+        duration: 2000,
+        placement: "top",
+        render: () => (
+          <Box bg="success.500" px="4" py="2">
+            <Text>New expense added successfully!</Text>
+          </Box>
+        ),
+      });
     } catch (error) {
       toast.show({
         duration: 2000,

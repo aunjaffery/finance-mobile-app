@@ -1,5 +1,6 @@
 
 -------------- ToDo ----------------
+-- dont move after adding new expense
 -- settings page
 -- global currency variable
 -- check and catch error on very api
