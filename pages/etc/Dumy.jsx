@@ -1,6 +1,21 @@
 import { Box, Button, Flex, Heading, Text } from "native-base";
+import * as FileSystem from "expo-file-system";
+import { export_database, import_database } from "../../services/database";
 
-const Dummy = ({ navigation }) => {
+const Dummy = () => {
+  const test = async () => {
+    let docx = await FileSystem.readDirectoryAsync(
+      `${FileSystem.documentDirectory}SQLite`
+    );
+    console.log(docx);
+  };
+  let g = async () => {
+    try {
+      await export_database();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Flex flex={1} p={10}>
       <Box>
@@ -12,17 +27,26 @@ const Dummy = ({ navigation }) => {
         </Box>
       </Box>
       <Box mt="4">
-        <Button colorScheme="blue" _text={{ fontWeight: "bold" }}>
-          Submit
+        <Button
+          colorScheme="blue"
+          _text={{ fontWeight: "bold" }}
+          onPress={test}
+        >
+          Test
+        </Button>
+      </Box>
+      <Box mt="4">
+        <Button colorScheme="blue" _text={{ fontWeight: "bold" }} onPress={g}>
+          Export Database
         </Button>
       </Box>
       <Box mt="4">
         <Button
-          onPress={() => navigation.popToTop()}
+          onPress={() => import_database()}
           colorScheme="blue"
           _text={{ fontWeight: "bold" }}
         >
-          Pop
+          Import DataBase
         </Button>
       </Box>
     </Flex>

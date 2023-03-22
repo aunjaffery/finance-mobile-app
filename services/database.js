@@ -1,5 +1,13 @@
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import moment from "moment";
+import { Platform } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 import * as SQLite from "expo-sqlite";
-const db = SQLite.openDatabase("flex1.db");
+let dbName = "MyDb.db";
+let db = {};
+db = SQLite.openDatabase(dbName);
+console.log("db==>", db);
 
 export const InitDb = () => {
   console.log("Initializing Database -->");
@@ -19,6 +27,77 @@ export const InitDb = () => {
       );
     });
   });
+};
+export const export_database = async () => {
+  console.log("Exporting Datbase ----------->");
+  let time = moment().format("YYYY-MM-DD_HHmmss");
+  if (Platform.OS === "android") {
+    try {
+      const permissions =
+        await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+      if (!permissions.granted) {
+        return;
+      }
+      const base64 = await FileSystem.readAsStringAsync(
+        `${FileSystem.documentDirectory}SQLite/${dbName}`,
+        {
+          encoding: FileSystem.EncodingType.Base64,
+        }
+      );
+
+      let uri = await FileSystem.StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        `${dbName}${time}`,
+        "application/octet-stream"
+      );
+      await FileSystem.StorageAccessFramework.writeAsStringAsync(uri, base64, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    await Sharing.shareAsync(`${FileSystem.documentDirectory}SQLite/${dbName}`);
+  }
+};
+export const import_database = async () => {
+  console.log("Importing new Datbase ----------->");
+  try {
+    let result = await DocumentPicker.getDocumentAsync({
+      copyToCacheDirectory: false,
+    });
+    console.log("Read result", result);
+
+    if (result.type === "success") {
+      if (
+        !(
+          await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite")
+        ).exists
+      ) {
+        await FileSystem.makeDirectoryAsync(
+          FileSystem.documentDirectory + "SQLite"
+        );
+      }
+      console.log("begin Reading -->");
+
+      const base64 = await FileSystem.readAsStringAsync(result.uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      console.log("begin Writing -->");
+      await FileSystem.writeAsStringAsync(
+        `${FileSystem.documentDirectory}SQLite/${dbName}`,
+        base64,
+        { encoding: FileSystem.EncodingType.Base64 }
+      );
+      console.log("Closing DB -->");
+      db.closeAsync();
+      console.log("Restablising Db connection -->");
+      db = SQLite.openDatabase(dbName);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const fetchExpenses = (month) => {
