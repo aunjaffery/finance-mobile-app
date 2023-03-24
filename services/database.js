@@ -4,6 +4,7 @@ import moment from "moment";
 import { Platform } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as SQLite from "expo-sqlite";
+import * as Updates from "expo-updates";
 let dbName = "MyDb.db";
 let db = {};
 db = SQLite.openDatabase(dbName);
@@ -23,10 +24,36 @@ export const InitDb = () => {
 			description TEXT)`,
         [],
         resolve,
-        (_, error) => reject(error)
+        (_, error) => {
+          reInitDb();
+          reject(error);
+        }
       );
     });
   });
+};
+
+export const showDox = async () => {
+  let dir = await FileSystem.readDirectoryAsync(
+    `${FileSystem.documentDirectory}SQLite`
+  );
+  console.log(dir);
+};
+
+export const reInitDb = async () => {
+  console.log("reInit called -->");
+  try {
+    await FileSystem.deleteAsync(
+      `${FileSystem.documentDirectory}SQLite/${dbName}`,
+      {
+        idempotent: true,
+      }
+    );
+    await Updates.reloadAsync();
+  } catch (error) {
+    console.log("reInit Error =>");
+    console.log(error);
+  }
 };
 export const export_database = async () => {
   console.log("Exporting Datbase ----------->");
@@ -90,10 +117,11 @@ export const import_database = async () => {
         base64,
         { encoding: FileSystem.EncodingType.Base64 }
       );
-      console.log("Closing DB -->");
-      db.closeAsync();
-      console.log("Restablising Db connection -->");
-      db = SQLite.openDatabase(dbName);
+      await Updates.reloadAsync();
+      // console.log("Closing DB -->");
+      // db.closeAsync();
+      // console.log("Restablising Db connection -->");
+      // db = SQLite.openDatabase(dbName);
     }
   } catch (error) {
     console.log(error);

@@ -61,7 +61,7 @@ const ExpenseStore = (set, get) => ({
       });
     } catch (error) {
       console.log(error);
-      set({ loading: false, error: error });
+      set({ loading: false, error: error, expList: null });
     }
   },
   addExpAsync: async (data) => {

@@ -13,6 +13,11 @@ import { useEffect } from "react";
 import { FocusBar } from "../../services/FocusBar";
 import { useStore } from "../../store/Store";
 import { Platform } from "react-native";
+import {
+  export_database,
+  import_database,
+  showDox,
+} from "../../services/database";
 
 const Settings = ({ navigation }) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -123,7 +128,7 @@ const Settings = ({ navigation }) => {
           _pressed={{
             bg: iconBg,
           }}
-          onPress={() => console.log("Qwe")}
+          onPress={import_database}
         >
           <Flex direction="row" align="center" justify="space-between">
             <Flex direction="row" align="center">
@@ -136,7 +141,69 @@ const Settings = ({ navigation }) => {
                   textAlign="center"
                 />
               </Box>
-              <Text fontSize="sm">Backup Data</Text>
+              <Text fontSize="sm">Import Database</Text>
+            </Flex>
+            <Icon
+              name="chevron-forward"
+              as={<Ionicons name="chevron-forward" />}
+              color={iconColor}
+              size={18}
+              textAlign="center"
+            />
+          </Flex>
+        </Pressable>
+        <Pressable
+          p="2"
+          mb="2"
+          borderRadius="lg"
+          _pressed={{
+            bg: iconBg,
+          }}
+          onPress={export_database}
+        >
+          <Flex direction="row" align="center" justify="space-between">
+            <Flex direction="row" align="center">
+              <Box borderWidth={0} p="2" bg={iconBg} mr="2" borderRadius="md">
+                <Icon
+                  name="cloud-upload-outline"
+                  as={<Ionicons name="cloud-download-outline" />}
+                  color={iconColor}
+                  size={15}
+                  textAlign="center"
+                />
+              </Box>
+              <Text fontSize="sm">Export Database</Text>
+            </Flex>
+            <Icon
+              name="chevron-forward"
+              as={<Ionicons name="chevron-forward" />}
+              color={iconColor}
+              size={18}
+              textAlign="center"
+            />
+          </Flex>
+        </Pressable>
+        <Pressable
+          p="2"
+          mb="2"
+          borderRadius="lg"
+          _pressed={{
+            bg: iconBg,
+          }}
+          onPress={showDox}
+        >
+          <Flex direction="row" align="center" justify="space-between">
+            <Flex direction="row" align="center">
+              <Box borderWidth={0} p="2" bg={iconBg} mr="2" borderRadius="md">
+                <Icon
+                  name="cloud-upload-outline"
+                  as={<Ionicons name="cloud-download-outline" />}
+                  color={iconColor}
+                  size={15}
+                  textAlign="center"
+                />
+              </Box>
+              <Text fontSize="sm">Show Dox</Text>
             </Flex>
             <Icon
               name="chevron-forward"

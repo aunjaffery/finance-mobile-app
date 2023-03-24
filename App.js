@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NativeBaseProvider, extendTheme } from "native-base";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { InitDb } from "./services/database";
 import AppNavigation from "./services/AppNavigation";
 import { globalTheme, nativeBaseTheme } from "./services/theme";
@@ -11,6 +11,7 @@ import {
   Rubik_500Medium,
   Rubik_600SemiBold,
 } from "@expo-google-fonts/rubik";
+import { Image } from "expo-image";
 
 const theme = extendTheme(nativeBaseTheme);
 
@@ -25,8 +26,12 @@ export default function App() {
 
   React.useEffect(() => {
     async function bootstrap() {
-      await InitDb();
-      setIsReady(true);
+      try {
+        await InitDb();
+        setIsReady(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
     bootstrap();
   }, []);
@@ -41,9 +46,16 @@ export default function App() {
           backgroundColor: globalTheme.dark.secondary,
         }}
       >
-        <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
-          Loading...
-        </Text>
+        <Image
+          source={require("./assets/logo.png")}
+          alt="Loading..."
+          style={{
+            width: 200,
+            height: 40,
+            borderColor: "pink",
+            borderWidth: 0,
+          }}
+        />
       </View>
     );
   }

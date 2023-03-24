@@ -1,6 +1,6 @@
 
 -------------- ToDo ----------------
--- dont move after adding new expense
+-- updates and refresh
 -- settings page
 -- global currency variable
 -- check and catch error on very api
@@ -21,6 +21,7 @@
 
 
 -------------- DONE ----------------
+-- dont move after adding new expense
 -- check xAxis again. I removed rotation
 -- form checks
 -- Gradiant on chart
