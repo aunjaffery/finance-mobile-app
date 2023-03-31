@@ -21,8 +21,10 @@ import {
   randomColors,
 } from "../../services/helper";
 import { useStore } from "../../store/Store";
+import { useIsFocused } from "@react-navigation/native";
 
 const CatGraph = () => {
+  const isFocus = useIsFocused();
   const toast = useToast();
   const [monList, setMonList] = useState(null);
   const [selectedMon, setSelectedMon] = useState(moment().format(mFmt));
@@ -34,8 +36,10 @@ const CatGraph = () => {
   }, []);
 
   useEffect(() => {
-    callCatGraph();
-  }, [selectedMon]);
+    if (isFocus) {
+      callCatGraph();
+    }
+  }, [selectedMon, isFocus]);
 
   const callCatGraph = async () => {
     try {

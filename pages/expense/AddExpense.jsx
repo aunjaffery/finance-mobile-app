@@ -88,7 +88,6 @@ const AddExpense = ({ navigation }) => {
       data.date = timeDate;
       //data.title = null;
       await addExpAsync(data);
-      console.log(data);
       reset();
       toast.show({
         duration: 2000,

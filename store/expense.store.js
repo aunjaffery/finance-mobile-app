@@ -32,7 +32,6 @@ const ExpenseStore = (set, get) => ({
   catLoading: false,
   catGraph: [],
   fetchExpAsync: async () => {
-    console.log("this >", get().selectedMon);
     try {
       set({ loading: true, error: null });
       const rsp = await fetchExpenses(get().selectedMon);
@@ -67,7 +66,6 @@ const ExpenseStore = (set, get) => ({
   addExpAsync: async (data) => {
     try {
       set({ addLoading: true });
-      console.log("ADD -->", data);
       await createExpense(data);
       await get().fetchExpAsync();
       set({ addLoading: false });
@@ -78,7 +76,6 @@ const ExpenseStore = (set, get) => ({
   },
   delExpAsync: async (id) => {
     try {
-      console.log("deleteing expense -->", id);
       await deleteExpense(id);
       await get().fetchExpAsync();
     } catch (error) {
@@ -87,7 +84,6 @@ const ExpenseStore = (set, get) => ({
     }
   },
   getExpDayGraph: async () => {
-    console.log("Called by day graph ==>");
     try {
       set({ graphLoading: true });
       let dayGraph = await expByDay(getPrevMonth());
@@ -107,7 +103,6 @@ const ExpenseStore = (set, get) => ({
     }
   },
   getExpMonthGraph: async () => {
-    console.log("Called by month graph ==>");
     try {
       set({ graphLoading: true });
       let monthGraph = await expByMonth(getPrevYear());
@@ -127,7 +122,6 @@ const ExpenseStore = (set, get) => ({
     }
   },
   getExpByCat: async (mon) => {
-    console.log("Called by Cat graph ==>");
     try {
       set({ catLoading: true });
       let rsp = await expByCat(mon);

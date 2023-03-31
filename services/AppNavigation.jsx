@@ -26,7 +26,6 @@ const AppNavigation = () => {
         darkMode ? globalTheme.dark.primary : globalTheme.light.primary
       );
     }
-    console.log("DARK MODE >>>", darkMode);
   }, [darkMode]);
 
   return (

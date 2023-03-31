@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import {
   Box,
   Flex,
@@ -8,15 +9,14 @@ import {
   useToast,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { logger } from "react-native-logs";
 import { FocusBar } from "../../services/FocusBar";
 import { useStore } from "../../store/Store";
 import BarGraphComp from "./BarGhraph";
 import CatGraph from "./CatGraph";
 
 const AreaChartComp = () => {
-  let log = logger.createLogger();
   const toast = useToast();
+  const isFocus = useIsFocused();
   const [span, setSpan] = useState("month");
   const {
     graphLoading,
@@ -27,8 +27,10 @@ const AreaChartComp = () => {
   } = useStore((state) => state);
 
   useEffect(() => {
-    fn();
-  }, [span]);
+    if (isFocus) {
+      fn();
+    }
+  }, [span, isFocus]);
 
   const fn = async () => {
     try {
@@ -38,8 +40,6 @@ const AreaChartComp = () => {
         await getExpMonthGraph();
       }
     } catch (error) {
-      console.log("IN Error -->");
-      console.log(error);
       toast.show({
         duration: 2000,
         placement: "top",

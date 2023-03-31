@@ -35,7 +35,6 @@ const ExpenseCard = ({ exp }) => {
           </Box>
         ),
       });
-      console.log("Unwrap Del error ->", error);
     }
   };
   const cardBg = useColorModeValue(

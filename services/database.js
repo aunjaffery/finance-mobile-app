@@ -5,10 +5,9 @@ import { Platform } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as SQLite from "expo-sqlite";
 import * as Updates from "expo-updates";
-let dbName = "MyDb.db";
+let dbName = "finlex.db";
 let db = {};
 db = SQLite.openDatabase(dbName);
-console.log("db==>", db);
 
 export const InitDb = () => {
   console.log("Initializing Database -->");
@@ -25,7 +24,6 @@ export const InitDb = () => {
         [],
         resolve,
         (_, error) => {
-          reInitDb();
           reject(error);
         }
       );
@@ -41,7 +39,6 @@ export const showDox = async () => {
 };
 
 export const reInitDb = async () => {
-  console.log("reInit called -->");
   try {
     await FileSystem.deleteAsync(
       `${FileSystem.documentDirectory}SQLite/${dbName}`,
@@ -51,12 +48,10 @@ export const reInitDb = async () => {
     );
     await Updates.reloadAsync();
   } catch (error) {
-    console.log("reInit Error =>");
     console.log(error);
   }
 };
 export const export_database = async () => {
-  console.log("Exporting Datbase ----------->");
   let time = moment().format("YYYY-MM-DD_HHmmss");
   if (Platform.OS === "android") {
     try {
@@ -88,12 +83,10 @@ export const export_database = async () => {
   }
 };
 export const import_database = async () => {
-  console.log("Importing new Datbase ----------->");
   try {
     let result = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,
     });
-    console.log("Read result", result);
 
     if (result.type === "success") {
       if (
@@ -105,13 +98,11 @@ export const import_database = async () => {
           FileSystem.documentDirectory + "SQLite"
         );
       }
-      console.log("begin Reading -->");
 
       const base64 = await FileSystem.readAsStringAsync(result.uri, {
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      console.log("begin Writing -->");
       await FileSystem.writeAsStringAsync(
         `${FileSystem.documentDirectory}SQLite/${dbName}`,
         base64,
@@ -120,7 +111,6 @@ export const import_database = async () => {
       await Updates.reloadAsync();
       // console.log("Closing DB -->");
       // db.closeAsync();
-      // console.log("Restablising Db connection -->");
       // db = SQLite.openDatabase(dbName);
     }
   } catch (error) {

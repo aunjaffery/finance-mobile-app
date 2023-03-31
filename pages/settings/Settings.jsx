@@ -13,11 +13,7 @@ import { useEffect } from "react";
 import { FocusBar } from "../../services/FocusBar";
 import { useStore } from "../../store/Store";
 import { Platform } from "react-native";
-import {
-  export_database,
-  import_database,
-  showDox,
-} from "../../services/database";
+import * as Updates from "expo-updates";
 
 const Settings = ({ navigation }) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -29,6 +25,14 @@ const Settings = ({ navigation }) => {
   }, [colorMode]);
   let iconBg = useColorModeValue("bg.200", "dark.200");
   let iconColor = useColorModeValue("black", "white");
+  const reloadApp = async () => {
+    try {
+      console.log("reload called");
+      await Updates.reloadAsync();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Box>
       <FocusBar />
@@ -66,7 +70,7 @@ const Settings = ({ navigation }) => {
           _pressed={{
             bg: iconBg,
           }}
-          onPress={() => navigation.push("Dummy")}
+          onPress={() => navigation.push("aboutme")}
         >
           <Flex direction="row" align="center" justify="space-between">
             <Flex direction="row" align="center">
@@ -90,6 +94,7 @@ const Settings = ({ navigation }) => {
             />
           </Flex>
         </Pressable>
+        {/*
         <Pressable
           p="2"
           mb="2"
@@ -97,20 +102,20 @@ const Settings = ({ navigation }) => {
           _pressed={{
             bg: iconBg,
           }}
-          onPress={() => navigation.push("Terms")}
+          onPress={reloadApp}
         >
           <Flex direction="row" align="center" justify="space-between">
             <Flex direction="row" align="center">
               <Box borderWidth={0} p="2" bg={iconBg} mr="2" borderRadius="md">
                 <Icon
-                  name="document-text-outline"
-                  as={<Ionicons name="document-text-outline" />}
+                  name="cloud-upload-outline"
+                  as={<Ionicons name="cloud-download-outline" />}
                   color={iconColor}
                   size={15}
                   textAlign="center"
                 />
               </Box>
-              <Text fontSize="sm">Terms of service</Text>
+              <Text fontSize="sm">Show Dox</Text>
             </Flex>
             <Icon
               name="chevron-forward"
@@ -204,6 +209,39 @@ const Settings = ({ navigation }) => {
                 />
               </Box>
               <Text fontSize="sm">Show Dox</Text>
+            </Flex>
+            <Icon
+              name="chevron-forward"
+              as={<Ionicons name="chevron-forward" />}
+              color={iconColor}
+              size={18}
+              textAlign="center"
+            />
+          </Flex>
+        </Pressable>
+
+		  */}
+        <Pressable
+          p="2"
+          mb="2"
+          borderRadius="lg"
+          _pressed={{
+            bg: iconBg,
+          }}
+          onPress={() => navigation.push("Terms")}
+        >
+          <Flex direction="row" align="center" justify="space-between">
+            <Flex direction="row" align="center">
+              <Box borderWidth={0} p="2" bg={iconBg} mr="2" borderRadius="md">
+                <Icon
+                  name="document-text-outline"
+                  as={<Ionicons name="document-text-outline" />}
+                  color={iconColor}
+                  size={15}
+                  textAlign="center"
+                />
+              </Box>
+              <Text fontSize="sm">Terms of service</Text>
             </Flex>
             <Icon
               name="chevron-forward"

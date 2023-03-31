@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-test",
-    "slug": "expo-test",
+    "name": "finlex",
+    "slug": "finlex",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,11 +13,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.finlex.app",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/icon512.png",
         "backgroundColor": "#000000"
       },
       "package": "com.finlex.app"

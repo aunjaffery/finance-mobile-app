@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Dummy from "../pages/etc/Dumy";
+import AboutMe from "../pages/settings/AboutMe";
 import Settings from "../pages/settings/Settings";
 import Terms from "../pages/settings/Terms";
 
@@ -16,10 +16,10 @@ const SettingStack = () => {
         }}
       />
       <Stack.Screen
-        name="Dummy"
-        component={Dummy}
+        name="aboutme"
+        component={AboutMe}
         options={{
-          title: "Dummy",
+          title: "About Me",
         }}
       />
       <Stack.Screen
