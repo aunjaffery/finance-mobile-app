@@ -1,14 +1,13 @@
 
 -------------- ToDo ----------------
 -- updates and refresh
--- settings page
 -- global currency variable
--- check and catch error on very api
 -- QA
 
 
 
 ------------- Back Logs ------------
+-- remove import/export for publish. impliment google drive later
 -- sqlite backup
 
 
@@ -21,6 +20,8 @@
 
 
 -------------- DONE ----------------
+-- check and catch error on very api
+-- settings page
 -- dont move after adding new expense
 -- check xAxis again. I removed rotation
 -- form checks
